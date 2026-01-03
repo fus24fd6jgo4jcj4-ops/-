@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <title>...</title>
-
 <style>
 html, body {
   margin: 0;
@@ -11,10 +10,8 @@ html, body {
   height: 100%;
   background: black;
   overflow: hidden;
-
 }
 
-/* culo 1 */
 .screen {
   position: fixed;
   inset: 0;
@@ -22,108 +19,104 @@ html, body {
   display: none;
 }
 
-/* Culo 2 */
-#texto {
+/* Estilo para los textos ocultos */
+.oculto {
   position: fixed;
   color: black;
   background: black;
   user-select: text; 
   font-family: monospace;
   font-size: 14px;
+  white-space: nowrap;
 }
 
-/* Culo3 */
 #burla {
   position: fixed;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-
   color: #888;
   font-family: monospace;
   font-size: 36px;
   opacity: 0;
   transition: opacity 0.3s;
   pointer-events: none;
+  z-index: 100;
 }
 </style>
 </head>
-
 <body>
 
 <div class="screen">
-  <pre id="texto">https://pony.tube/w/uZr3o85rkmWcr7ir5SAkmx/pista</pre>
+  <pre class="oculto">https://pony.tube/w/uZr3o85rkmWcr7ir5SAkmx/pista</pre>
 </div>
 
 <div class="screen">
-  <pre id="texto">https://www.google.com/search?client=opera-gx&hs=q8F&sca_esv=abb8d21828775dab&sxsrf=AE3TifO8hvQp3ZMMH6xbgLPMFCUtw11Ymg:1767404101124&udm=2&fbs=AIIjpHxU7SXXniUZfeShr2fp4giZ1Y6MJ25_tmWITc7uy4KIeiAkWG4OlBE2zyCTMjPbGmPgfe_7ak8LUsonpWCvT6w6csnyTymMQ2XHqFKxVhyiTqOfKFbf4T6dxHDi8XqaOzfk_L7Wuf_0ulVZPdwuMTYTl7he4DXzjDu7dohpcb_qGu19JUgfyn90w--MFyWhS-MRzzfTkQ8NSJJQo937oJI7FnFwnQ&q=equestria+girls&sa=X&ved=2ahUKEwjz2Pysne6RAxWIGLkGHXxTCigQtKgLegQIEBAB&biw=1500&bih=766&dpr=1.25#sv=CAMSXhoyKhBlLWR6X0VtZzl4YVAzVktNMg5kel9FbWc5eGFQM1ZLTToOMF9PeFVOSmFBOUd5S00gBCokCg52dHQ1QjBwcERtV0MwTRIQZS1kel9FbWc5eGFQM1ZLTRgAMAEYByCD4vf_BTACSgoIAhACGAIgAigC/pista</pre>
+  <pre class="oculto">https://www.google.com/search?q=equestria+girls...</pre>
 </div>
 
-<div class="screen">
-  <pre id="texto">http://link-tres.onion/pista</pre>
+<div class="screen" id="pantalla-real">
+  <pre class="oculto" id="link-b">PAGINA_B: link-a-tu-pagina-b.html</pre>
+  <pre class="oculto" id="codigo-b"></pre>
 </div>
 
 <div id="burla">JAJAJA, ¿no te funciona? 😜</div>
 
 <script>
-// Culo 5
 const screens = document.querySelectorAll(".screen");
-const chosen = screens[Math.floor(Math.random() * screens.length)];
+const chosenIndex = Math.floor(Math.random() * screens.length);
+const chosen = screens[chosenIndex];
 chosen.style.display = "block";
 
-// Posicionar texto aleatoriamente
-const texto = chosen.querySelector("#texto");
-const padding = 20;
+// Si es la pantalla real, generar el código
+if (chosen.id === "pantalla-real") {
+    const codigo = Math.random().toString(36).substring(2, 8).toUpperCase();
+    localStorage.setItem('clave_secreta', codigo);
+    document.getElementById('codigo-b').innerText = "CODIGO: " + codigo;
+}
 
-const maxX = window.innerWidth - texto.offsetWidth - padding;
-const maxY = window.innerHeight - texto.offsetHeight - padding;
+// Función para mover elementos a coordenadas aleatorias
+function dispersarTexto(elemento) {
+    const padding = 50;
+    const maxX = window.innerWidth - elemento.offsetWidth - padding;
+    const maxY = window.innerHeight - elemento.offsetHeight - padding;
+    
+    elemento.style.left = Math.floor(Math.random() * Math.max(0, maxX)) + "px";
+    elemento.style.top  = Math.floor(Math.random() * Math.max(0, maxY)) + "px";
+}
 
-texto.style.left = Math.floor(Math.random() * maxX) + "px";
-texto.style.top  = Math.floor(Math.random() * maxY) + "px";
-
-// Fullscreen con Enter
-let fullscreenActivo = false;
-document.addEventListener("keydown", e => {
-  if (e.key === "Enter" && !fullscreenActivo) {
-    document.documentElement.requestFullscreen().then(() => {
-      fullscreenActivo = true;
-    }).catch(()=>{});
-  }
+// Dispersar todos los textos ocultos de la pantalla elegida
+const textosDeEstaPantalla = chosen.querySelectorAll(".oculto");
+textosDeEstaPantalla.forEach(t => {
+    dispersarTexto(t);
 });
 
-// Ocultar cursor
+// --- Lógica Troll Estándar ---
 document.body.style.cursor = "none";
 
-// ano?
 document.addEventListener("keydown", e => {
-  if (e.key === "Escape") {
-    e.preventDefault();
+  if (e.key === "Enter") {
+    document.documentElement.requestFullscreen().catch(()=>{});
   }
-});
-
-// Bloquear Ctrl + A + burla centrada
-document.addEventListener("keydown", e => {
+  if (e.key === "Escape") e.preventDefault();
+  
+  // Bloquear Ctrl+A y mostrar burla
   if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "a") {
     e.preventDefault();
-
     const burla = document.getElementById("burla");
     burla.style.opacity = "1";
-
-    setTimeout(() => {
-      burla.style.opacity = "0";
-    }, 2000);
+    setTimeout(() => { burla.style.opacity = "0"; }, 2000);
   }
 });
 
-// damelo
+// Evitar selección accidental fuera de los textos
 document.addEventListener("dblclick", e => {
-  if (e.target.id !== "texto") {
+  if (!e.target.classList.contains("oculto")) {
     e.preventDefault();
     window.getSelection().removeAllRanges();
   }
 });
-
 </script>
 
 </body>
