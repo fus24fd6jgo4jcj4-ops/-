@@ -1,31 +1,86 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title></title>
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-      background: black;
-      cursor: default;
-    }
+<meta charset="UTF-8">
+<title></title>
 
-    /* Zona invisible clickeable */
-    .hidden-link {
-      position: absolute;
-      top: 45%;
-      left: 45%;
-      width: 10%;
-      height: 10%;
-    }
-  </style>
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: black;
+  overflow: hidden;
+  cursor: none;
+  user-select: none;
+}
+
+/* zona seleccionable */
+#zona {
+  width: 100%;
+  height: 100%;
+  user-select: text; /* permite seleccionar */
+}
+
+/* texto invisible */
+#texto {
+  color: black; /* mismo color que el fondo */
+  font-family: monospace;
+  font-size: 16px;
+  white-space: pre;
+}
+
+/* fullscreen hint */
+#mensaje {
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #222;
+  font-family: monospace;
+  font-size: 12px;
+}
+</style>
 </head>
+
 <body>
 
-  <a class="hidden-link" href="http://euqrjceb3fa3o2rxjuqqkx76qjreqjlvtidfpgfyv6cd4z22hybnccyd.onion/" aria-label="hidden"></a>
+<div id="zona">
+  <pre id="texto">
+https://ejemplo.onion/pista
+  </pre>
+</div>
+
+<div id="mensaje">ENTER</div>
+
+<script>
+let fullscreenActivo = false;
+
+function activarFullscreen() {
+  const elem = document.documentElement;
+  if (!document.fullscreenElement) {
+    elem.requestFullscreen().catch(()=>{});
+  }
+  fullscreenActivo = true;
+  document.getElementById("mensaje").style.display = "none";
+}
+
+/* ENTER fullscreen */
+document.addEventListener("keydown", e => {
+  if (e.key === "Enter") activarFullscreen();
+});
+
+/* CLICK fullscreen */
+document.addEventListener("click", activarFullscreen);
+
+/* ESC parcial */
+document.addEventListener("fullscreenchange", () => {
+  if (!document.fullscreenElement && fullscreenActivo) {
+    setTimeout(activarFullscreen, 200);
+  }
+});
+</script>
 
 </body>
 </html>
