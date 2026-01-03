@@ -12,11 +12,9 @@ html, body {
   background: black;
   overflow: hidden;
 
-  /* 🔑 CLAVE: desactivar selección global */
-  user-select: none;
 }
 
-/* Pantallas falsas */
+/* culo 1 */
 .screen {
   position: fixed;
   inset: 0;
@@ -24,17 +22,17 @@ html, body {
   display: none;
 }
 
-/* Texto oculto (ÚNICO seleccionable) */
+/* Culo 2 */
 #texto {
   position: fixed;
   color: black;
   background: black;
-  user-select: text; /* ← solo acá se puede seleccionar */
+  user-select: text; 
   font-family: monospace;
   font-size: 14px;
 }
 
-/* Texto de burla centrado */
+/* Culo3 */
 #burla {
   position: fixed;
   inset: 0;
@@ -69,7 +67,7 @@ html, body {
 <div id="burla">JAJAJA, ¿no te funciona? 😜</div>
 
 <script>
-// Elegir pantalla aleatoria
+// Culo 5
 const screens = document.querySelectorAll(".screen");
 const chosen = screens[Math.floor(Math.random() * screens.length)];
 chosen.style.display = "block";
@@ -97,7 +95,7 @@ document.addEventListener("keydown", e => {
 // Ocultar cursor
 document.body.style.cursor = "none";
 
-// Bloqueo parcial de ESC
+// ano?
 document.addEventListener("keydown", e => {
   if (e.key === "Escape") {
     e.preventDefault();
@@ -118,7 +116,7 @@ document.addEventListener("keydown", e => {
   }
 });
 
-// Bloquear doble click completamente (refuerzo)
+// damelo
 document.addEventListener("dblclick", e => {
   if (e.target.id !== "texto") {
     e.preventDefault();
