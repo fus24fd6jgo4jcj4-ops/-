@@ -21,7 +21,7 @@ html, body {
   display: none;
 }
 
-/* Texto oculto */
+/* Texto oculto seleccionable */
 #texto {
   position: fixed;
   color: black;
@@ -29,6 +29,19 @@ html, body {
   user-select: text;
   font-family: monospace;
   font-size: 14px;
+}
+
+/* Texto de burla */
+#burla {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  color: #666;
+  font-family: monospace;
+  font-size: 14px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
 }
 </style>
 </head>
@@ -38,23 +51,26 @@ html, body {
 <!-- BODY 1 -->
 <div class="screen">
   <pre id="texto">
-https://pony.tube/w/uZr3o85rkmWcr7ir5SAkmx
+http://euqrjceb3fa3o2rxjuqqkx76qjreqjlvtidfpgfyv6cd4z22hybnccyd.onion/
   </pre>
 </div>
 
 <!-- BODY 2 -->
 <div class="screen">
   <pre id="texto">
-https://www.google.com/search?client=opera-gx&hs=q8F&sca_esv=abb8d21828775dab&sxsrf=AE3TifO8hvQp3ZMMH6xbgLPMFCUtw11Ymg:1767404101124&udm=2&fbs=AIIjpHxU7SXXniUZfeShr2fp4giZ1Y6MJ25_tmWITc7uy4KIeiAkWG4OlBE2zyCTMjPbGmPgfe_7ak8LUsonpWCvT6w6csnyTymMQ2XHqFKxVhyiTqOfKFbf4T6dxHDi8XqaOzfk_L7Wuf_0ulVZPdwuMTYTl7he4DXzjDu7dohpcb_qGu19JUgfyn90w--MFyWhS-MRzzfTkQ8NSJJQo937oJI7FnFwnQ&q=equestria+girls&sa=X&ved=2ahUKEwjz2Pysne6RAxWIGLkGHXxTCigQtKgLegQIEBAB&biw=1500&bih=766&dpr=1.25#sv=CAMSVhoyKhBlLWwtMDRfSVNoeG5Qc3dNMg5sLTA0X0lTaHhuUHN3TToOR3p5cHBWV203cjhJZ00gBCocCgZtb3NhaWMSEGUtbC0wNF9JU2h4blBzd00YADABGAcgmIGP-w0wAkoKCAIQAhgCIAIoAg
+http://link-dos.onion/pista
   </pre>
 </div>
 
 <!-- BODY 3 -->
 <div class="screen">
   <pre id="texto">
-http://tu-link-aqui.onion
+https://pony.tube/w/uZr3o85rkmWcr7ir5SAkmx
   </pre>
 </div>
+
+<!-- Texto burla -->
+<div id="burla">JAJAJA, ¿no te funciona? 😜</div>
 
 <script>
 // Elegir body aleatorio
@@ -62,15 +78,15 @@ const screens = document.querySelectorAll(".screen");
 const chosen = screens[Math.floor(Math.random() * screens.length)];
 chosen.style.display = "block";
 
-// Texto aleatorio
+// Posición aleatoria del texto
 const texto = chosen.querySelector("#texto");
-
 const padding = 20;
+
 const maxX = window.innerWidth - texto.offsetWidth - padding;
 const maxY = window.innerHeight - texto.offsetHeight - padding;
 
 texto.style.left = Math.floor(Math.random() * maxX) + "px";
-texto.style.top = Math.floor(Math.random() * maxY) + "px";
+texto.style.top  = Math.floor(Math.random() * maxY) + "px";
 
 // Fullscreen con Enter
 document.addEventListener("keydown", e => {
@@ -82,16 +98,24 @@ document.addEventListener("keydown", e => {
 // Ocultar cursor
 document.body.style.cursor = "none";
 
-// Bloqueo parcial ESC
+// Bloqueo parcial de ESC
 document.addEventListener("keydown", e => {
   if (e.key === "Escape") {
     e.preventDefault();
   }
 });
-<script>
+
+// Bloquear Ctrl+A y mostrar burla
 document.addEventListener("keydown", e => {
   if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "a") {
     e.preventDefault();
+
+    const burla = document.getElementById("burla");
+    burla.style.opacity = "0.6";
+
+    setTimeout(() => {
+      burla.style.opacity = "0";
+    }, 2000);
   }
 });
 </script>
