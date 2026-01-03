@@ -88,6 +88,12 @@ document.addEventListener("keydown", e => {
     e.preventDefault();
   }
 });
+<script>
+document.addEventListener("keydown", e => {
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "a") {
+    e.preventDefault();
+  }
+});
 </script>
 
 </body>
