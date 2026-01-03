@@ -13,7 +13,7 @@ html, body {
   overflow: hidden;
 }
 
-/* Bodys falsos */
+/* Pantallas */
 .screen {
   position: fixed;
   inset: 0;
@@ -21,7 +21,7 @@ html, body {
   display: none;
 }
 
-/* Texto oculto seleccionable */
+/* Texto oculto */
 #texto {
   position: fixed;
   color: black;
@@ -48,37 +48,27 @@ html, body {
 
 <body>
 
-<!-- BODY 1 -->
 <div class="screen">
-  <pre id="texto">
-http://euqrjceb3fa3o2rxjuqqkx76qjreqjlvtidfpgfyv6cd4z22hybnccyd.onion/
-  </pre>
+  <pre id="texto">http://link-uno.onion/pista</pre>
 </div>
 
-<!-- BODY 2 -->
 <div class="screen">
-  <pre id="texto">
-http://link-dos.onion/pista
-  </pre>
+  <pre id="texto">http://link-dos.onion/pista</pre>
 </div>
 
-<!-- BODY 3 -->
 <div class="screen">
-  <pre id="texto">
-https://pony.tube/w/uZr3o85rkmWcr7ir5SAkmx
-  </pre>
+  <pre id="texto">http://link-tres.onion/pista</pre>
 </div>
 
-<!-- Texto burla -->
 <div id="burla">JAJAJA, ¿no te funciona? 😜</div>
 
 <script>
-// Elegir body aleatorio
+// BODY ALEATORIO
 const screens = document.querySelectorAll(".screen");
 const chosen = screens[Math.floor(Math.random() * screens.length)];
 chosen.style.display = "block";
 
-// Posición aleatoria del texto
+// TEXTO ALEATORIO
 const texto = chosen.querySelector("#texto");
 const padding = 20;
 
@@ -88,34 +78,41 @@ const maxY = window.innerHeight - texto.offsetHeight - padding;
 texto.style.left = Math.floor(Math.random() * maxX) + "px";
 texto.style.top  = Math.floor(Math.random() * maxY) + "px";
 
-// Fullscreen con Enter
+// FULLSCREEN CON ENTER (ARREGLADO)
+let fullscreenActivo = false;
 document.addEventListener("keydown", e => {
-  if (e.key === "Enter") {
-    document.documentElement.requestFullscreen().catch(()=>{});
+  if (e.key === "Enter" && !fullscreenActivo) {
+    document.documentElement.requestFullscreen().then(() => {
+      fullscreenActivo = true;
+    }).catch(()=>{});
   }
 });
 
-// Ocultar cursor
+// OCULTAR CURSOR
 document.body.style.cursor = "none";
 
-// Bloqueo parcial de ESC
+// BLOQUEO PARCIAL DE ESC
 document.addEventListener("keydown", e => {
   if (e.key === "Escape") {
     e.preventDefault();
   }
 });
 
-// Bloquear Ctrl+A y mostrar burla
+// BLOQUEAR CTRL+A + BURLA
 document.addEventListener("keydown", e => {
   if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "a") {
     e.preventDefault();
-
     const burla = document.getElementById("burla");
     burla.style.opacity = "0.6";
+    setTimeout(() => burla.style.opacity = "0", 2000);
+  }
+});
 
-    setTimeout(() => {
-      burla.style.opacity = "0";
-    }, 2000);
+// BLOQUEAR DOBLE CLICK (EXCEPTO EN EL TEXTO)
+document.addEventListener("dblclick", e => {
+  if (e.target.id !== "texto") {
+    e.preventDefault();
+    window.getSelection().removeAllRanges();
   }
 });
 </script>
