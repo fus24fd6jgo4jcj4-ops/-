@@ -11,9 +11,12 @@ html, body {
   height: 100%;
   background: black;
   overflow: hidden;
+
+  /* 🔑 CLAVE: desactivar selección global */
+  user-select: none;
 }
 
-/* Pantallas */
+/* Pantallas falsas */
 .screen {
   position: fixed;
   inset: 0;
@@ -21,24 +24,27 @@ html, body {
   display: none;
 }
 
-/* Texto oculto */
+/* Texto oculto (ÚNICO seleccionable) */
 #texto {
   position: fixed;
   color: black;
   background: black;
-  user-select: text;
+  user-select: text; /* ← solo acá se puede seleccionar */
   font-family: monospace;
   font-size: 14px;
 }
 
-/* Texto de burla */
+/* Texto de burla centrado */
 #burla {
   position: fixed;
-  top: 10px;
-  left: 10px;
-  color: #666;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #888;
   font-family: monospace;
-  font-size: 14px;
+  font-size: 36px;
   opacity: 0;
   transition: opacity 0.3s;
   pointer-events: none;
@@ -63,12 +69,12 @@ html, body {
 <div id="burla">JAJAJA, ¿no te funciona? 😜</div>
 
 <script>
-// BODY ALEATORIO
+// Elegir pantalla aleatoria
 const screens = document.querySelectorAll(".screen");
 const chosen = screens[Math.floor(Math.random() * screens.length)];
 chosen.style.display = "block";
 
-// TEXTO ALEATORIO
+// Posicionar texto aleatoriamente
 const texto = chosen.querySelector("#texto");
 const padding = 20;
 
@@ -78,7 +84,7 @@ const maxY = window.innerHeight - texto.offsetHeight - padding;
 texto.style.left = Math.floor(Math.random() * maxX) + "px";
 texto.style.top  = Math.floor(Math.random() * maxY) + "px";
 
-// FULLSCREEN CON ENTER (ARREGLADO)
+// Fullscreen con Enter
 let fullscreenActivo = false;
 document.addEventListener("keydown", e => {
   if (e.key === "Enter" && !fullscreenActivo) {
@@ -88,27 +94,31 @@ document.addEventListener("keydown", e => {
   }
 });
 
-// OCULTAR CURSOR
+// Ocultar cursor
 document.body.style.cursor = "none";
 
-// BLOQUEO PARCIAL DE ESC
+// Bloqueo parcial de ESC
 document.addEventListener("keydown", e => {
   if (e.key === "Escape") {
     e.preventDefault();
   }
 });
 
-// BLOQUEAR CTRL+A + BURLA
+// Bloquear Ctrl + A + burla centrada
 document.addEventListener("keydown", e => {
   if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "a") {
     e.preventDefault();
+
     const burla = document.getElementById("burla");
-    burla.style.opacity = "0.6";
-    setTimeout(() => burla.style.opacity = "0", 2000);
+    burla.style.opacity = "1";
+
+    setTimeout(() => {
+      burla.style.opacity = "0";
+    }, 2000);
   }
 });
 
-// BLOQUEAR DOBLE CLICK (EXCEPTO EN EL TEXTO)
+// Bloquear doble click completamente (refuerzo)
 document.addEventListener("dblclick", e => {
   if (e.target.id !== "texto") {
     e.preventDefault();
