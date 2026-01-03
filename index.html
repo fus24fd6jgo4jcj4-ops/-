@@ -2,82 +2,90 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title></title>
+<title>...</title>
 
 <style>
 html, body {
   margin: 0;
-  padding: 0;
   width: 100%;
   height: 100%;
   background: black;
   overflow: hidden;
-  cursor: none;
-  user-select: none;
 }
 
-/* zona seleccionable */
-#zona {
-  width: 100%;
-  height: 100%;
-  user-select: text; /* permite seleccionar */
-}
-
-/* texto invisible */
-#texto {
-  color: black; /* mismo color que el fondo */
-  font-family: monospace;
-  font-size: 16px;
-  white-space: pre;
-}
-
-/* fullscreen hint */
-#mensaje {
+/* Bodys falsos */
+.screen {
   position: fixed;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  color: #222;
+  inset: 0;
+  background: black;
+  display: none;
+}
+
+/* Texto oculto */
+#texto {
+  position: fixed;
+  color: black;
+  background: black;
+  user-select: text;
   font-family: monospace;
-  font-size: 12px;
+  font-size: 14px;
 }
 </style>
 </head>
 
 <body>
 
-<div id="zona">
+<!-- BODY 1 -->
+<div class="screen">
   <pre id="texto">
-https://ejemplo.onion/pista
+https://pony.tube/w/uZr3o85rkmWcr7ir5SAkmx
   </pre>
 </div>
 
-<div id="mensaje">ENTER</div>
+<!-- BODY 2 -->
+<div class="screen">
+  <pre id="texto">
+https://www.google.com/search?client=opera-gx&hs=q8F&sca_esv=abb8d21828775dab&sxsrf=AE3TifO8hvQp3ZMMH6xbgLPMFCUtw11Ymg:1767404101124&udm=2&fbs=AIIjpHxU7SXXniUZfeShr2fp4giZ1Y6MJ25_tmWITc7uy4KIeiAkWG4OlBE2zyCTMjPbGmPgfe_7ak8LUsonpWCvT6w6csnyTymMQ2XHqFKxVhyiTqOfKFbf4T6dxHDi8XqaOzfk_L7Wuf_0ulVZPdwuMTYTl7he4DXzjDu7dohpcb_qGu19JUgfyn90w--MFyWhS-MRzzfTkQ8NSJJQo937oJI7FnFwnQ&q=equestria+girls&sa=X&ved=2ahUKEwjz2Pysne6RAxWIGLkGHXxTCigQtKgLegQIEBAB&biw=1500&bih=766&dpr=1.25#sv=CAMSVhoyKhBlLWwtMDRfSVNoeG5Qc3dNMg5sLTA0X0lTaHhuUHN3TToOR3p5cHBWV203cjhJZ00gBCocCgZtb3NhaWMSEGUtbC0wNF9JU2h4blBzd00YADABGAcgmIGP-w0wAkoKCAIQAhgCIAIoAg
+  </pre>
+</div>
+
+<!-- BODY 3 -->
+<div class="screen">
+  <pre id="texto">
+http://tu-link-aqui.onion
+  </pre>
+</div>
 
 <script>
-let fullscreenActivo = false;
+// Elegir body aleatorio
+const screens = document.querySelectorAll(".screen");
+const chosen = screens[Math.floor(Math.random() * screens.length)];
+chosen.style.display = "block";
 
-function activarFullscreen() {
-  const elem = document.documentElement;
-  if (!document.fullscreenElement) {
-    elem.requestFullscreen().catch(()=>{});
-  }
-  fullscreenActivo = true;
-  document.getElementById("mensaje").style.display = "none";
-}
+// Texto aleatorio
+const texto = chosen.querySelector("#texto");
 
-/* ENTER fullscreen */
+const padding = 20;
+const maxX = window.innerWidth - texto.offsetWidth - padding;
+const maxY = window.innerHeight - texto.offsetHeight - padding;
+
+texto.style.left = Math.floor(Math.random() * maxX) + "px";
+texto.style.top = Math.floor(Math.random() * maxY) + "px";
+
+// Fullscreen con Enter
 document.addEventListener("keydown", e => {
-  if (e.key === "Enter") activarFullscreen();
+  if (e.key === "Enter") {
+    document.documentElement.requestFullscreen().catch(()=>{});
+  }
 });
 
-/* CLICK fullscreen */
-document.addEventListener("click", activarFullscreen);
+// Ocultar cursor
+document.body.style.cursor = "none";
 
-/* ESC parcial */
-document.addEventListener("fullscreenchange", () => {
-  if (!document.fullscreenElement && fullscreenActivo) {
-    setTimeout(activarFullscreen, 200);
+// Bloqueo parcial ESC
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") {
+    e.preventDefault();
   }
 });
 </script>
