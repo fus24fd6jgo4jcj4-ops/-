@@ -53,11 +53,11 @@ html, body {
 <body>
 
 <div class="screen">
-  <pre id="texto">http://link-uno.onion/pista</pre>
+  <pre id="texto">https://pony.tube/w/uZr3o85rkmWcr7ir5SAkmx/pista</pre>
 </div>
 
 <div class="screen">
-  <pre id="texto">http://link-dos.onion/pista</pre>
+  <pre id="texto">https://www.google.com/search?client=opera-gx&hs=q8F&sca_esv=abb8d21828775dab&sxsrf=AE3TifO8hvQp3ZMMH6xbgLPMFCUtw11Ymg:1767404101124&udm=2&fbs=AIIjpHxU7SXXniUZfeShr2fp4giZ1Y6MJ25_tmWITc7uy4KIeiAkWG4OlBE2zyCTMjPbGmPgfe_7ak8LUsonpWCvT6w6csnyTymMQ2XHqFKxVhyiTqOfKFbf4T6dxHDi8XqaOzfk_L7Wuf_0ulVZPdwuMTYTl7he4DXzjDu7dohpcb_qGu19JUgfyn90w--MFyWhS-MRzzfTkQ8NSJJQo937oJI7FnFwnQ&q=equestria+girls&sa=X&ved=2ahUKEwjz2Pysne6RAxWIGLkGHXxTCigQtKgLegQIEBAB&biw=1500&bih=766&dpr=1.25#sv=CAMSXhoyKhBlLWR6X0VtZzl4YVAzVktNMg5kel9FbWc5eGFQM1ZLTToOMF9PeFVOSmFBOUd5S00gBCokCg52dHQ1QjBwcERtV0MwTRIQZS1kel9FbWc5eGFQM1ZLTRgAMAEYByCD4vf_BTACSgoIAhACGAIgAigC/pista</pre>
 </div>
 
 <div class="screen">
@@ -123,6 +123,14 @@ document.addEventListener("dblclick", e => {
     window.getSelection().removeAllRanges();
   }
 });
+  function generarCodigo() {
+  return Math.random().toString(36).substring(2, 8).toUpperCase();
+}
+
+const codigo = generarCodigo();
+sessionStorage.setItem("codigo_unico", codigo);
+document.getElementById("code").textContent = codigo;
+
 </script>
 
 </body>
