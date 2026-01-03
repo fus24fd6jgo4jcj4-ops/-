@@ -123,13 +123,6 @@ document.addEventListener("dblclick", e => {
     window.getSelection().removeAllRanges();
   }
 });
-  function generarCodigo() {
-  return Math.random().toString(36).substring(2, 8).toUpperCase();
-}
-
-const codigo = generarCodigo();
-sessionStorage.setItem("codigo_unico", codigo);
-document.getElementById("code").textContent = codigo;
 
 </script>
 
